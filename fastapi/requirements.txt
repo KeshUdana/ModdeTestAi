@@ -1,7 +1,6 @@
-# FastAPI requirements.txt
 fastapi==0.95.2
 uvicorn==0.22.0
-pinecone-client==2.2.1
+pinecone==6.0.1
 torch==2.0.1
 torchvision==0.15.2
 numpy==1.23.5
