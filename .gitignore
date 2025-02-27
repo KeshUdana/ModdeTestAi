@@ -1,0 +1,13 @@
+# Global .gitignore
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+*.pyc
+__pycache__/
+*.egg-info/
+*.log
+*.sqlite
+.vscode/
+.idea/

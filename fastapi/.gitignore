@@ -1,0 +1,6 @@
+# FastAPI .gitignore
+__pycache__/
+*.pyc
+.env
+*.log
+venv/
