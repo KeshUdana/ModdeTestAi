@@ -8,7 +8,7 @@ from feature_extractor import extract_features
 app = FastAPI()
 
 # Initialize Pinecone
-pinecone.init(api_key="YOUR_API_KEY", environment="YOUR_ENVIRONMENT")
+pinecone.init(api_key="pcsk_gn4ag_R7CK4tBTkdzFBfYTnTTkDnyzdkvm5awyAbFu7it8u6GV1EwRTgGKJ77igpmv2ma", environment="us-east-1")
 index = pinecone.Index("image-search")
 
 @app.post("/upload")
