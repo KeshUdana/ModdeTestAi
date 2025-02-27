@@ -3,6 +3,7 @@ import pinecone
 import uvicorn
 import shutil
 from feature_extractor import extract_features
+import uuid
 
 app = FastAPI()
 
