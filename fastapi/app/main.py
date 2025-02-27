@@ -4,6 +4,7 @@ import uvicorn
 import shutil
 import uuid
 from app.feature_extractor import extract_features
+from fastapi import FastAPI, UploadFile, File, HTTPException
 
 app = FastAPI()
 
@@ -29,20 +30,34 @@ async def upload_product(file: UploadFile = File(...)):
 
 @app.post("/search")
 async def search_similar_images(file: UploadFile = File(...)):
-    img_path = "temp.jpg"
-    with open(img_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    try:
+        # Save uploaded image
+        img_path = "temp.jpg"
+        with open(img_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    query_features = extract_features(img_path).tolist()
+        print("Image saved successfully.")
 
-    # Query Pinecone
-    results = index.query(query_features, top_k=5, include_metadata=True)
-    similar_images = [match.id for match in results.matches]
+        # Extract features
+        query_features = extract_features(img_path).tolist()
+        print("Features extracted successfully.")
 
-     # Optionally, remove the temp file after processing
-    #os.remove(img_path)
+        # Query Pinecone using keyword arguments
+        results = index.query(
+            vector=query_features,  # Use keyword argument for the vector
+            top_k=5,               # Use keyword argument for top_k
+            include_metadata=True  # Use keyword argument for include_metadata
+        )
+        print("Pinecone query successful.")
 
-    return {"similar_images": similar_images}
+        # Get top 5 similar images
+        similar_images = [match.id for match in results.matches]
+        print("Similar images:", similar_images)
+
+        return {"similar_images": similar_images}
+    except Exception as e:
+        print("Error in /search endpoint:", str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
